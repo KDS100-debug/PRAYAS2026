@@ -1,15 +1,15 @@
 :root{
-  --bg:#f6f7fb;
+  --bg:#ffffff;
   --card:#ffffff;
-  --primary: #4763f1;
-  --primary-600: #3b54d1;
-  --accent: #764ba2;
+  --primary: #dc143c;
+  --primary-600: #b22222;
+  --accent: #ff6b6b;
   --muted:#6b7280;
   --success:#28a745;
   --danger:#dc3545;
   --radius:12px;
-  --glass: rgba(255,255,255,0.7);
-  --shadow: 0 8px 30px rgba(16,24,40,0.08);
+  --glass: rgba(255,255,255,0.9);
+  --shadow: 0 8px 30px rgba(220,20,60,0.08);
 }
 
 /* Reset & sensible defaults */
@@ -17,9 +17,9 @@
 html,body{height:100%}
 body{
   margin:0;
-  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg,var(--bg),#eef2ff);
-  color:#111827;
+  font-family: 'Arial Round', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg,var(--bg),#fefefe);
+  color:#000000;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height:1.45;
