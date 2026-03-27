@@ -25,7 +25,14 @@ class DatabaseConfig:
         DB_PORT = os.getenv('DB_PORT', '5432')
         DB_NAME = os.getenv('DB_NAME', 'prayas2026')
         DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-    
+
+    # Force SSL for cloud PostgreSQL if not explicit
+    if DATABASE_URL and 'sslmode' not in DATABASE_URL.lower():
+        if '?' in DATABASE_URL:
+            DATABASE_URL = DATABASE_URL + '&sslmode=require'
+        else:
+            DATABASE_URL = DATABASE_URL + '?sslmode=require'
+
     # SQLAlchemy configuration
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -14,10 +14,16 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Configure CORS for specific domain
+# Configure CORS for deployment with fallback
+cors_origins = os.getenv('CORS_ORIGINS', '*')
+if cors_origins.strip() == '*':
+    cors_origins_value = '*'
+else:
+    cors_origins_value = [origin.strip() for origin in cors_origins.split(',') if origin.strip()]
+
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["https://prayas-2026-9nzyw6u0g-prayas-projects-296a2a3c.vercel.app"],
+        "origins": cors_origins_value,
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
@@ -35,9 +41,20 @@ if not DATABASE_URL:
     db_name = os.getenv('DB_NAME', 'prayas2026')
     DATABASE_URL = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 
+# Force SSL for cloud PostgreSQL if not explicit
+if DATABASE_URL and 'sslmode' not in DATABASE_URL.lower():
+    if '?' in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL + '&sslmode=require'
+    else:
+        DATABASE_URL = DATABASE_URL + '?sslmode=require'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
+app.config['ENV'] = os.getenv('FLASK_ENV', 'production')
+app.config['DEBUG'] = os.getenv('FLASK_DEBUG', 'False').lower() in ['1', 'true', 'yes']
+
+# Database initialization
 
 db = SQLAlchemy(app)
 
